@@ -13,6 +13,24 @@
 
       this.player = this.add.sprite(x, y, 'player');
       this.player.anchor.setTo(0.5, 0.5);
+
+
+
+    //  The 'mario' key here is the Loader key given in game.load.tilemap
+    var map = this.add.tilemap('sides-map');
+
+    //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
+    //  The second parameter maps this name to the Phaser.Cache key 'tiles'
+    map.addTilesetImage('fantasy-tileset', 'tiles');
+
+    //  Creates a layer from the World1 layer in the map data.
+    //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
+    var layer = map.createLayer('box-sides-layer');
+
+    //  This resizes the game world to match the layer dimensions
+    layer.resizeWorld();
+
+
     },
 
     update: function () {
