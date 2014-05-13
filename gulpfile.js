@@ -12,15 +12,7 @@ var gulp = require('gulp')
   , paths;
 var ftp = require('gulp-ftp');
 
-gulp.task('deploy', function () {
-    return gulp.src('dist/**/*')
-        .pipe(ftp({
-            host: 'ftp.twogreenpixels.io',
-            user: 'twogreen',
-            pass: 'CvX44PBf',
-            remotePath: 'www/fat'
-        }));
-});
+
 
 paths = {
   assets: 'src/assets/**/*',
@@ -29,17 +21,30 @@ paths = {
     'src/bower_components/phaser-official/build/phaser.min.js'
   ],
   js:     ['src/js/**/*.js'],
-  dist:   './dist/'
+  dist:   './dist/',
+  serverDir: 'www/fat'
 };
 
+gulp.task('deploy', function () {
+    return gulp.src(paths.dist + '**/*')
+        .pipe(ftp({
+            host: 'ftp.twogreenpixels.io',
+            user: 'twogreen',
+            pass: 'CvX44PBf',
+            remotePath: paths.serverDir
+        }));
+});
+
 gulp.task('clean', function () {
-  gulp.src(paths.dist, {read: false})
+  return gulp.src(paths.dist, {read: false})
     .pipe(clean({force: true}))
     .on('error', gutil.log);
 });
 
-gulp.task('copy', function () {
-  gulp.src(paths.assets)
+
+
+gulp.task('copy', ['clean'], function () {
+  return gulp.src(paths.assets)
     .pipe(gulp.dest(paths.dist + 'assets'))
     .on('error', gutil.log);
 });
@@ -47,7 +52,7 @@ gulp.task('copy', function () {
 gulp.task('uglify', ['lint'], function () {
   var srcs = [paths.libs[0], paths.js[0]];
 
-  gulp.src(srcs)
+  return gulp.src(srcs)
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(paths.dist))
     .pipe(uglify({outSourceMaps: false}))
@@ -55,7 +60,7 @@ gulp.task('uglify', ['lint'], function () {
 });
 
 gulp.task('minifycss', function () {
- gulp.src(paths.css)
+  return gulp.src(paths.css)
     .pipe(minifycss({
       keepSpecialComments: false,
       removeEmpty: true
@@ -66,28 +71,28 @@ gulp.task('minifycss', function () {
 });
 
 gulp.task('processhtml', function() {
-  gulp.src('src/index.html')
+  return gulp.src('src/index.html')
     .pipe(processhtml('index.html'))
     .pipe(gulp.dest(paths.dist))
     .on('error', gutil.log);
 });
 
 gulp.task('minifyhtml', function() {
-  gulp.src('dist/index.html')
+  return gulp.src('dist/index.html')
     .pipe(minifyhtml())
     .pipe(gulp.dest(paths.dist))
     .on('error', gutil.log);
 });
 
 gulp.task('lint', function() {
-  gulp.src(paths.js)
+  return gulp.src(paths.js)
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .on('error', gutil.log);
 });
 
 gulp.task('html', function(){
-  gulp.src('src/*.html')
+  return gulp.src('src/*.html')
     .pipe(connect.reload())
     .on('error', gutil.log);
 });
@@ -107,4 +112,9 @@ gulp.task('watch', function () {
 
 gulp.task('default', ['connect', 'watch']);
 gulp.task('build', ['clean', 'copy', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+
+gulp.task('dd', ['clean'], function(){
+  gulp.run('copy', 'uglify', 'minifycss', 'processhtml', 'minifyhtml');
+  console.log('done!')
+});
 
