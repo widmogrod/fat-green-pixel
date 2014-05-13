@@ -10,10 +10,21 @@ var gulp = require('gulp')
   , uglify = require('gulp-uglify')
   , connect = require('gulp-connect')
   , paths;
+var ftp = require('gulp-ftp');
+
+gulp.task('deploy', function () {
+    return gulp.src('dist/**/*')
+        .pipe(ftp({
+            host: 'ftp.twogreenpixels.io',
+            user: 'twogreen',
+            pass: 'CvX44PBf',
+            remotePath: 'www/fat'
+        }));
+});
 
 paths = {
   assets: 'src/assets/**/*',
-  css:    'src/css/*.css', 
+  css:    'src/css/*.css',
   libs:   [
     'src/bower_components/phaser-official/build/phaser.min.js'
   ],
