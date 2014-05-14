@@ -41,7 +41,7 @@
       this.game.physics.arcade.collide(this.player, this.layer);
       this.layer.position.y += 100;
       //TODO: check time diff!!!!!
-      var speed = 0.005;
+      var speed = 0.01;
       if (this.game.input.mousePointer.isDown){
           this.player.scale.x *= 1 + speed;
           this.player.scale.y *= 1 + speed;
