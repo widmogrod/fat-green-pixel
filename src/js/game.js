@@ -3,6 +3,8 @@
 
   function Game() {
     this.player = null;
+    this.tilemap = null;
+    this.layer = null;
   }
 
   Game.prototype = {
@@ -13,28 +15,31 @@
 
       this.player = this.add.sprite(x, y, 'player');
       this.player.anchor.setTo(0.5, 0.5);
+      this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+      this.player.body.collideWorldBounds = true;
 
 
 
     //  The 'mario' key here is the Loader key given in game.load.tilemap
-    var map = this.add.tilemap('sides-map');
+    this.tilemap = this.add.tilemap('sides-map');
 
     //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
     //  The second parameter maps this name to the Phaser.Cache key 'tiles'
-    map.addTilesetImage('fantasy-tileset', 'tiles');
+    this.tilemap.addTilesetImage('fantasy-tileset', 'tiles');
 
     //  Creates a layer from the World1 layer in the map data.
     //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
-    var layer = map.createLayer('box-sides-layer');
-
+    this.layer = this.tilemap.createLayer('box-sides-layer');
+    this.layer.debug = true;
     //  This resizes the game world to match the layer dimensions
-    layer.resizeWorld();
+    //this.layer.resizeWorld();
 
 
     },
 
     update: function () {
-
+      this.game.physics.arcade.collide(this.player, this.layer);
+      this.layer.position.y += 100;
       //TODO: check time diff!!!!!
       var speed = 0.005;
       if (this.game.input.mousePointer.isDown){
