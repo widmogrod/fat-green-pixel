@@ -1,36 +1,35 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  function Boot() {}
+    function Boot() {}
 
-  Boot.prototype = {
-    
-    preload: function () {
-      this.load.image('preloader', 'assets/preloader.gif');
-    },
+    Boot.prototype = {
+        preload: function () {
+            this.load.image('preloader', 'assets/preloader.gif');
+        },
 
-    create: function () {
-      this.game.input.maxPointers = 1;
-      // this.game.stage.disableVisibilityChange = true;
+        create: function () {
+            this.game.input.maxPointers = 1;
 
-      if (this.game.device.desktop) {
-        this.game.stage.scale.pageAlignHorizontally = true;
-      } else {
-        this.game.stage.scaleMode = Phaser.StageScaleMode.SHOW_ALL;
-        this.game.stage.scale.minWidth =  480;
-        this.game.stage.scale.minHeight = 260;
-        this.game.stage.scale.maxWidth = 640;
-        this.game.stage.scale.maxHeight = 480;
-        this.game.stage.scale.forceLandscape = true;
-        this.game.stage.scale.pageAlignHorizontally = true;
-        this.game.stage.scale.setScreenSize(true);
-      }
-      this.game.state.start('preloader');
-    }
-  };
+            if (this.game.device.desktop) {
+                this.game.scale.pageAlignHorizontally = true;
+            } else {
+                this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+                // this.game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
+                // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                this.game.scale.minWidth =  480;
+                this.game.scale.minHeight = 260;
+                this.game.scale.maxWidth = 640;
+                this.game.scale.maxHeight = 480;
+                this.game.scale.setMaximum();
+                this.game.scale.refresh();
+            }
+            this.game.state.start('preloader');
+        }
+    };
 
-  window['fat-green-pixel'] = window['fat-green-pixel'] || {};
-  window['fat-green-pixel'].Boot = Boot;
+    window['fat-green-pixel'] = window['fat-green-pixel'] || {};
+    window['fat-green-pixel'].Boot = Boot;
 
 }());
 
