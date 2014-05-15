@@ -25,7 +25,7 @@
 
     //  The 'mario' key here is the Loader key given in game.load.tilemap
     this.tilemap = this.add.tilemap('sides-map');
-    this.tilemap.setCollision([9, 20])
+    this.tilemap.setCollision([9, 20]);
 
     //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
     //  The second parameter maps this name to the Phaser.Cache key 'tiles'
@@ -42,7 +42,7 @@
     this.player.position.y = this.tilemap.heightInPixels - 100;
     this.game.camera.y =  this.tilemap.heightInPixels - 100;
 
-    console.log(this.tilemap.heightInPixels)
+    console.log(this.tilemap.heightInPixels);
 
 
     },
@@ -75,7 +75,7 @@
       }
 
       if(this.player.scale.x < 0.1){
-        this.game.state.start('menu');
+        this.game.state.start('gameover');
       }
     }
 
