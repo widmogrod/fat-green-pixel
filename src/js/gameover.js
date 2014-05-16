@@ -1,24 +1,24 @@
 (function() {
   'use strict';
 
-  function Menu() {
+  function GameOver() {
     this.titleTxt = null;
     this.startTxt = null;
   }
 
-  Menu.prototype = {
+  GameOver.prototype = {
 
     create: function () {
       var x = this.game.width / 2
         , y = this.game.height / 2;
 
 
-      this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'START' );
+      this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'TRY AGAIN' );
       this.titleTxt.align = 'center';
       this.titleTxt.x = this.game.width / 2 - this.titleTxt.textWidth / 2;
 
       y = y + this.titleTxt.height + 5;
-      this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'Fat Green Pixel');
+      this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'You died.');
       this.startTxt.align = 'center';
       this.startTxt.x = this.game.width / 2 - this.startTxt.textWidth / 2;
 
@@ -35,6 +35,6 @@
   };
 
   window['fat-green-pixel'] = window['fat-green-pixel'] || {};
-  window['fat-green-pixel'].Menu = Menu;
+  window['fat-green-pixel'].GameOver = GameOver;
 
 }());
