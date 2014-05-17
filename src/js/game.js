@@ -5,7 +5,7 @@
         this.player = null;
         this.tilemap = null;
         this.layer = null;
-        this.titleTxt = null;
+        this.scoreText = null;
         this.score = null;
     }
 
@@ -49,15 +49,20 @@
 
             this.score = 0;
 
-            this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Score: 0' );
-            this.titleTxt.align = 'center';
-            this.titleTxt.fixedToCamera = true;
-            this.titleTxt.x = this.game.width / 2 - this.titleTxt.textWidth / 2;
+            this.scoreText = this.add.bitmapText(0, 0, 'minecraftia', this.scoreText());
+            this.scoreText.align = 'center';
+            this.scoreText.fixedToCamera = true;
+            this.scoreText.x = this.game.width / 2 - this.scoreText.textWidth / 2;
         },
 
         onCoinCollision: function(player, tile) {
+            ++this.score;
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer')
-            this.titleTxt.text = 'Score: ' + (++this.score);
+            this.scoreText.text = this.scoreText();
+        },
+
+        scoreText: function() {
+            return 'Score: ' + this.score;
         },
 
         update: function () {
