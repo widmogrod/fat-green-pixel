@@ -64,18 +64,17 @@
 
             //TODO: check time diff!!!!!
             var speed = 0.06;
-            if (this.game.input.mousePointer.isDown
-                || this.game.input.pointer1.isDown){
-                    this.player.scale.x *= 1 + speed;
-                    this.player.scale.y *= 1 + speed;
-                }else{
-                    this.player.scale.x *= 1 - speed;
-                    this.player.scale.y *= 1 - speed;
-                }
+            if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
+                this.player.scale.x *= 1 + speed;
+                this.player.scale.y *= 1 + speed;
+            } else {
+                this.player.scale.x *= 1 - speed;
+                this.player.scale.y *= 1 - speed;
+            }
 
-                if(this.player.scale.x < 0.1){
-                    this.game.state.start('gameover');
-                }
+            if(this.player.scale.x < 0.1){
+                this.game.state.start('gameover');
+            }
         }
 
     };

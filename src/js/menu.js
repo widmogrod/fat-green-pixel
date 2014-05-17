@@ -23,6 +23,7 @@
       this.startTxt.x = this.game.width / 2 - this.startTxt.textWidth / 2;
 
       this.input.onDown.add(this.onDown, this);
+      this.input.onTap.add(this.onDown, this);
     },
 
     update: function () {
