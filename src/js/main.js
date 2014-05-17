@@ -21,6 +21,4 @@ window.onload = function () {
   game.state.add('gameover', ns.GameOver);
 
   game.state.start('boot');
-  console.log('loaded');
-  this.game = game;
 };
