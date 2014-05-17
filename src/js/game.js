@@ -5,6 +5,8 @@
         this.player = null;
         this.tilemap = null;
         this.layer = null;
+        this.titleTxt = null;
+        this.score = null;
     }
 
     Game.prototype = {
@@ -28,10 +30,7 @@
             //  The 'mario' key here is the Loader key given in game.load.tilemap
             this.tilemap = this.add.tilemap('sides-map');
             this.tilemap.setCollision([9, 20]);
-            this.tilemap.setTileIndexCallback(121, function(player, tile) {
-                this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer')
-                console.log('collect gold');
-            }.bind(this))
+            this.tilemap.setTileIndexCallback(121, this.onCoinCollision.bind(this))
 
             //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
             //  The second parameter maps this name to the Phaser.Cache key 'tiles'
@@ -47,6 +46,18 @@
 
             this.player.position.y = this.tilemap.heightInPixels - 100;
             this.game.camera.y =  this.tilemap.heightInPixels - 100;
+
+            this.score = 0;
+
+            this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Score: 0' );
+            this.titleTxt.align = 'center';
+            this.titleTxt.fixedToCamera = true;
+            this.titleTxt.x = this.game.width / 2 - this.titleTxt.textWidth / 2;
+        },
+
+        onCoinCollision: function(player, tile) {
+            this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer')
+            this.titleTxt.text = 'Score: ' + (++this.score);
         },
 
         update: function () {

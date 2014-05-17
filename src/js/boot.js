@@ -13,10 +13,11 @@
 
             if (this.game.device.desktop) {
                 this.game.scale.pageAlignHorizontally = true;
-            } else if (this.game.device.iPhone) {
+            } else {
                 this.game.scale.setMaximum();
                 this.game.scale.setSize();
             }
+
             this.game.state.start('preloader');
         }
     };
