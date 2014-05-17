@@ -2,7 +2,8 @@
   'use strict';
 
   function GameOver() {
-    this.titleTxt = null;
+    this.explanationTxt = null;
+    this.explanationTxt = null;
     this.startTxt = null;
   }
 
@@ -12,12 +13,16 @@
       var x = this.game.width / 2
         , y = this.game.height / 2;
 
-
       this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'TRY AGAIN' );
       this.titleTxt.align = 'center';
       this.titleTxt.x = this.game.width / 2 - this.titleTxt.textWidth / 2;
 
-      y = y + this.titleTxt.height + 5;
+      var hintY = this.game.height / 4;
+      this.explanationTxt = this.add.bitmapText(x, hintY, 'minecraftia', 'TIP: Tap and hold to grow!' );
+      this.explanationTxt.align = 'center';
+      this.explanationTxt.x = this.game.width / 2 - this.explanationTxt.textWidth / 2;
+
+      y = y + this.explanationTxt.height + 5;
       this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'You died.');
       this.startTxt.align = 'center';
       this.startTxt.x = this.game.width / 2 - this.startTxt.textWidth / 2;

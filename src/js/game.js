@@ -16,6 +16,8 @@
             this.player = this.add.sprite(x, y, 'player');
             this.player.anchor.setTo(0.5, 0.5);
             this.player.debug = true;
+            this.player.scale.x = 4;
+            this.player.scale.y = 4;
 
             this.game.camera.follow(this.player);
 
