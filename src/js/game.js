@@ -26,6 +26,10 @@
             //  The 'mario' key here is the Loader key given in game.load.tilemap
             this.tilemap = this.add.tilemap('sides-map');
             this.tilemap.setCollision([9, 20]);
+            this.tilemap.setTileIndexCallback(121, function(player, tile) {
+                this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer')
+                console.log('collect gold');
+            }.bind(this))
 
             //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
             //  The second parameter maps this name to the Phaser.Cache key 'tiles'
@@ -45,11 +49,9 @@
 
         update: function () {
             var that = this;
-            this.game.physics.arcade.collide(this.player, this.layer, function(){
+            this.game.physics.arcade.collide(this.player, this.layer, function(player, tile){
                 //TODO: buggy probably because of scale on player
                 //what about player body?
-                console.log('collision!!');
-
                 that.game.state.start('menu');
             });
 
