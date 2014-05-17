@@ -16,10 +16,12 @@
             this.player = this.add.sprite(x, y, 'player');
             this.player.anchor.setTo(0.5, 0.5);
             this.player.debug = true;
-            this.player.body.collideWorldBounds = true;
 
-            this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
             this.game.camera.follow(this.player);
+
+            // Enable physics on player
+            this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+            this.player.body.collideWorldBounds = true;
 
             //  The 'mario' key here is the Loader key given in game.load.tilemap
             this.tilemap = this.add.tilemap('sides-map');
@@ -39,10 +41,6 @@
 
             this.player.position.y = this.tilemap.heightInPixels - 100;
             this.game.camera.y =  this.tilemap.heightInPixels - 100;
-
-            console.log(this.tilemap.heightInPixels);
-
-
         },
 
         update: function () {
