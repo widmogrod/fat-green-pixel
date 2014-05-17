@@ -19,6 +19,7 @@ window.onload = function () {
   game.state.add('menu', ns.Menu);
   game.state.add('game', ns.Game);
   game.state.add('gameover', ns.GameOver);
+  game.state.add('you-win', ns.YouWin);
 
   game.state.start('boot');
 };

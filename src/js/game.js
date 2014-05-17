@@ -31,6 +31,7 @@
             this.tilemap = this.add.tilemap('sides-map');
             this.tilemap.setCollision([9, 20]);
             this.tilemap.setTileIndexCallback(121, this.onCoinCollision.bind(this))
+            this.tilemap.setTileIndexCallback(23, this.onReachTheEnd.bind(this))
 
             //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
             //  The second parameter maps this name to the Phaser.Cache key 'tiles'
@@ -49,7 +50,7 @@
 
             this.score = 0;
 
-            this.scoreText = this.add.bitmapText(0, 0, 'minecraftia', this.scoreText());
+            this.scoreText = this.add.bitmapText(0, 0, 'minecraftia', this.scoreTextLabel());
             this.scoreText.align = 'center';
             this.scoreText.fixedToCamera = true;
             this.scoreText.x = this.game.width / 2 - this.scoreText.textWidth / 2;
@@ -58,10 +59,14 @@
         onCoinCollision: function(player, tile) {
             ++this.score;
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer')
-            this.scoreText.text = this.scoreText();
+            this.scoreText.text = this.scoreTextLabel();
         },
 
-        scoreText: function() {
+        onReachTheEnd: function(player, tile) {
+            this.game.state.start('you-win');
+        },
+
+        scoreTextLabel: function() {
             return 'Score: ' + this.score;
         },
 

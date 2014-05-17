@@ -1,13 +1,13 @@
 (function() {
   'use strict';
 
-  function YouWon() {
+  function YouWin() {
     this.explanationTxt = null;
     this.explanationTxt = null;
     this.startTxt = null;
   }
 
-  YouWon.prototype = {
+  YouWin.prototype = {
 
     create: function () {
       var x = this.game.width / 2
@@ -40,7 +40,7 @@
   };
 
   window['fat-green-pixel'] = window['fat-green-pixel'] || {};
-  window['fat-green-pixel'].YouWon = YouWon;
+  window['fat-green-pixel'].YouWin = YouWin;
 
 }());
 
