@@ -1,4 +1,4 @@
-(function() {
+(function(undefined) {
     'use strict';
 
     function Game() {
@@ -63,7 +63,7 @@
         },
 
         onReachTheEnd: function(player, tile) {
-            this.game.state.start('you-win');
+            this.game.state.start('you-win', undefined, undefined, this.score);
         },
 
         scoreTextLabel: function() {

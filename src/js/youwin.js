@@ -5,20 +5,25 @@
     this.explanationTxt = null;
     this.explanationTxt = null;
     this.startTxt = null;
+    this.score = 0;
   }
 
   YouWin.prototype = {
-
+    init: function(score) {
+        if (score > this.score) {
+            this.score = score;
+        }
+    },
     create: function () {
       var x = this.game.width / 2
         , y = this.game.height / 2;
 
-      this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'TRY AGAIN' );
+      this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'YOUR BEST SCORE: ' + this.score );
       this.titleTxt.align = 'center';
       this.titleTxt.x = this.game.width / 2 - this.titleTxt.textWidth / 2;
 
       var hintY = this.game.height / 4;
-      this.explanationTxt = this.add.bitmapText(x, hintY, 'minecraftia', 'TIP: Tap and hold to grow!' );
+      this.explanationTxt = this.add.bitmapText(x, hintY, 'minecraftia', 'Tap to beat you record!' );
       this.explanationTxt.align = 'center';
       this.explanationTxt.x = this.game.width / 2 - this.explanationTxt.textWidth / 2;
 
