@@ -33,7 +33,7 @@
       this.explanationTxt.x = this.game.width / 2 - this.explanationTxt.textWidth / 2;
 
       if (this.beatScore) {
-          this.explanationTxt.text = 'You beat your record!!'
+          this.explanationTxt.text = 'You beat your record!!';
           this.explanationTxt.tint = 0xff33cc;
       } else {
           this.explanationTxt.text = 'You neet to try harder, colected: ' + this.score;
