@@ -37,10 +37,19 @@
             //  The second parameter maps this name to the Phaser.Cache key 'tiles'
             this.tilemap.addTilesetImage('fantasy-tileset', 'tiles');
 
+            //  Here we create our coins group
+            this.coins = this.add.group();
+            this.coins.enableBody = true;
+
+            //  And now we convert all of the Tiled objects with an ID of 135 into sprites within the coins group
+            this.tilemap.createFromObjects('Coins Layer', 135, '135', 0, true, false, this.coins);
+
+
+
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             this.layer = this.tilemap.createLayer('box-sides-layer');
-            this.layer.debug = true;
+            //this.layer.debug = true;
             //this.layer.fixedToCamera = true;
             //  This resizes the game world to match the layer dimensions
             this.layer.resizeWorld();
