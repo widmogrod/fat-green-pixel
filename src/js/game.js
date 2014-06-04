@@ -37,14 +37,18 @@
             //  The second parameter maps this name to the Phaser.Cache key 'tiles'
             this.tilemap.addTilesetImage('fantasy-tileset', 'tiles');
 
+            //diamonds based on:
+            //EXAMPLE: http://examples.phaser.io/_site/view_full.html?d=tilemaps&f=create+from+objects.js&t=create%20from%20objects
+            this.tilemap.addTilesetImage('diamond');
             //  Here we create our coins group
-            this.coins = this.add.group();
-            this.coins.enableBody = true;
-
+            this.diamonds = this.add.group();
+            this.diamonds.enableBody = true;
             //  And now we convert all of the Tiled objects with an ID of 135 into sprites within the coins group
-            this.tilemap.createFromObjects('Coins Layer', 135, '135', 0, true, false, this.coins);
+            this.tilemap.createFromObjects('Picks Layer', 135, 'diamond', 0, true, false, this.diamonds);
 
-
+            //  Add animations to all of the coin sprites
+            this.diamonds.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3], 4, true);
+            this.diamonds.callAll('animations.play', 'animations', 'spin');
 
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
@@ -66,8 +70,12 @@
         },
 
         onCoinCollision: function(player, tile) {
-            ++this.score;
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer');
+            this.newPoint();
+        },
+
+        newPoint: function(){
+            ++this.score;
             this.scoreText.text = this.scoreTextLabel();
         },
 
@@ -86,8 +94,12 @@
                 //what about player body?
                 that.game.state.start('menu');
             });
+            this.game.physics.arcade.overlap(this.player, this.diamonds, function(player, diamond){
+                diamond.kill();
+                that.newPoint();
+             }, null, this);
 
-            this.player.body.velocity.y = -250;
+           this.player.body.velocity.y = -250;
 
             //this.game.camera.y -= 2;
 
@@ -95,7 +107,7 @@
             ///this.player.y = this.game.camera.y + 50;
 
             //TODO: check time diff!!!!!
-            var speed = 0.06;
+            var speed = 0.02;
             if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
                 this.player.scale.x *= 1 + speed;
                 this.player.scale.y *= 1 + speed;
@@ -107,6 +119,10 @@
             if(this.player.scale.x < 0.1){
                 this.game.state.start('gameover');
             }
+        },
+
+        render: function(){
+            //this.game.debug.body(this.player);
         }
 
     };

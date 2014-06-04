@@ -36,6 +36,8 @@
 
             this.load.image('tiles', 'assets/fantasy-tileset.png');
 
+            this.game.load.spritesheet('diamond', 'assets/diamond-sprite.png', 32, 32);
+
 
         },
 
