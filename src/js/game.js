@@ -20,6 +20,12 @@
             this.player.debug = true;
             this.player.scale.x = 4;
             this.player.scale.y = 4;
+            this.player.scaleGrowthSpeed = 1.05;
+            this.player.scaleShrinkSpeed = 0.98;
+            this.player.scaleAcceleration = 1;
+            this.player.minScaleToDie = 0.1;
+            this.player.movingSpeed = -280;
+            this.player.movingAcceleration = 1.0006;
 
             this.game.camera.follow(this.player);
 
@@ -39,7 +45,7 @@
 
             //diamonds based on:
             //EXAMPLE: http://examples.phaser.io/_site/view_full.html?d=tilemaps&f=create+from+objects.js&t=create%20from%20objects
-            this.tilemap.addTilesetImage('diamond');
+            //this.tilemap.addTilesetImage('diamond');
             //  Here we create our coins group
             this.diamonds = this.add.group();
             this.diamonds.enableBody = true;
@@ -99,7 +105,8 @@
                 that.newPoint();
              }, null, this);
 
-           this.player.body.velocity.y = -250;
+           this.player.body.velocity.y = this.player.movingSpeed;
+           this.player.movingSpeed *= this.player.movingAcceleration;
 
             //this.game.camera.y -= 2;
 
@@ -107,18 +114,19 @@
             ///this.player.y = this.game.camera.y + 50;
 
             //TODO: check time diff!!!!!
-            var speed = 0.02;
-            if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
-                this.player.scale.x *= 1 + speed;
-                this.player.scale.y *= 1 + speed;
-            } else {
-                this.player.scale.x *= 1 - speed;
-                this.player.scale.y *= 1 - speed;
-            }
 
-            if(this.player.scale.x < 0.1){
+            if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
+                this.player.scale.x *= this.player.scaleGrowthSpeed;
+                this.player.scale.y *= this.player.scaleGrowthSpeed;
+            } else {
+                this.player.scale.x *= this.player.scaleShrinkSpeed;
+                this.player.scale.y *= this.player.scaleShrinkSpeed;
+            }
+            if(this.player.scale.x < this.player.minScaleToDie){
                 this.game.state.start('gameover');
             }
+            this.player.scaleGrowthSpeed *= this.player.scaleAcceleration;
+            //this.player.scaleShrinkSpeed *= this.player.scaleAcceleration;
         },
 
         render: function(){
