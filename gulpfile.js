@@ -57,10 +57,12 @@ gulp.task('uglify', ['lint'], function () {
     return gulp.src(srcs)
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(paths.dist))
-    .pipe(uglify({
-        outSourceMaps: true,
-        beautify: true
-    }))
+    // .pipe(uglify({
+    //     mangle: false,
+    //     compress: false,
+    //     outSourceMaps: true,
+    //     beautify: true
+    // }))
     .pipe(gulp.dest(paths.dist));
 });
 

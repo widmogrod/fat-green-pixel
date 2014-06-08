@@ -8,13 +8,15 @@
         this.scoreText = null;
         this.score = null;
         this.diamonds = null;
-        this.position = 0;
         this.polyline = null;
-        this.stepDistance = 10;
     }
 
     Game.prototype = {
 
+        init: function() {
+            this.position = 0;
+            this.stepDistance = 10;
+        },
         create: function () {
             var x = this.game.width / 2
                 , y = this.game.height / 2;
