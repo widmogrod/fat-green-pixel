@@ -163,7 +163,7 @@
                 this.stepDistance = this.player.body.y - this.polyline[this.position][1];
                 this.stepDistance *= this.game.time.physicsElapsed;
                 // this.stepDistance = this.stepDistance >> 0;
-                console.log('move: ', this.stepDistance);
+                // console.log('move: ', this.stepDistance);
             }
 
             // Make moving from one point to another
