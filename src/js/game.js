@@ -7,6 +7,9 @@
         this.layer = null;
         this.scoreText = null;
         this.score = null;
+        this.diamonds = null;
+        this.polyline = null;
+         this.movingSpeed = 10;
     }
 
     Game.prototype = {
@@ -18,8 +21,8 @@
             this.player = this.add.sprite(x, y, 'player');
             this.player.anchor.setTo(0.5, 0.5);
             this.player.debug = true;
-            this.player.scale.x = 4;
-            this.player.scale.y = 4;
+            this.player.scale.x = .4;
+            this.player.scale.y = .4;
             this.player.scaleGrowthSpeed = 1.05;
             this.player.scaleShrinkSpeed = 0.98;
             this.player.scaleAcceleration = 1;
@@ -56,6 +59,7 @@
             this.diamonds.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3], 4, true);
             this.diamonds.callAll('animations.play', 'animations', 'spin');
 
+
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             this.layer = this.tilemap.createLayer('box-sides-layer');
@@ -64,8 +68,20 @@
             //  This resizes the game world to match the layer dimensions
             this.layer.resizeWorld();
 
-            this.player.position.y = this.tilemap.heightInPixels - 100;
-            this.game.camera.y =  this.tilemap.heightInPixels - 100;
+            var wordHeight = this.game.world.bounds.height;
+            var fallow = this.tilemap.collision.fallow[0];
+            this.polyline = fallow.polyline;
+            this.polyline.forEach(function(pos) {
+                pos[0] = fallow.x + pos[0];
+                pos[1] = fallow.y + pos[1];
+            });
+            this.position = 0;
+
+            // Set player position at the begining of the path
+            this.player.position.y = this.polyline[this.position][1];
+            this.game.camera.y = this.polyline[this.position][1];
+            // this.player.position.y = this.tilemap.heightInPixels - 100;
+            // this.game.camera.y =  this.tilemap.heightInPixels - 100;
 
             this.score = 0;
 
@@ -74,6 +90,7 @@
             this.scoreText.fixedToCamera = true;
             this.scoreText.x = this.game.width / 2 - this.scoreText.textWidth / 2;
         },
+
 
         onCoinCollision: function(player, tile) {
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer');
@@ -92,6 +109,12 @@
         scoreTextLabel: function() {
             return 'Score: ' + this.score;
         },
+        aproach: function(goal, current, step) {
+            var delta = goal - current;
+            if (Math.abs(delta) < step) return goal;
+
+            return delta < 0 ? current - step : current + step;
+        },
 
         update: function () {
             var that = this;
@@ -103,12 +126,12 @@
             this.game.physics.arcade.overlap(this.player, this.diamonds, function(player, diamond){
                 diamond.kill();
                 that.newPoint();
-             }, null, this);
+            }, null, this);
 
-           this.player.body.velocity.y = this.player.movingSpeed;
-           this.player.movingSpeed *= this.player.movingAcceleration;
+            this.player.body.velocity.y = this.player.movingSpeed;
+            // this.player.movingSpeed *= this.player.movingAcceleration;
 
-            //this.game.camera.y -= 2;
+            // this.game.camera.y -= 2;
 
             //TODO: scale & velocity vs collistions....
             ///this.player.y = this.game.camera.y + 50;
@@ -126,7 +149,36 @@
                 this.game.state.start('gameover');
             }
             this.player.scaleGrowthSpeed *= this.player.scaleAcceleration;
-            //this.player.scaleShrinkSpeed *= this.player.scaleAcceleration;
+            this.player.scaleShrinkSpeed *= this.player.scaleAcceleration;
+
+            if (this.position < this.polyline.length - 1
+                && this.polyline[this.position][1] > this.player.body.y
+            ) {
+                // this.player.body.x = this.polyline[this.position][0];
+                ++this.position;
+
+                // Callculate distance to destination
+                this.movingSpeed = this.polyline[this.position - 1][1] - this.polyline[this.position][1];
+                this.movingSpeed -= this.player.body.halfHeight;
+                // Divide it by speed, thanks to that we have speed witch wich we should move player to destination
+                this.movingSpeed /= this.player.body.speed;
+                // But we need to remember that current speed is per second
+                // We need to calculate it per frame
+                this.movingSpeed *= this.game.time.elapsed;
+            }
+
+            // Make moving from one point to another
+            this.player.body.x = this.aproach(
+                // Destination, when we want player to be.
+                // Takes into account player body, and move it relatively to its center
+                this.polyline[this.position][0] - this.player.body.halfWidth,
+                // Current possition
+                this.player.body.x,
+                // Speed witch wich we want he moves do destination.
+                // Should be connected with distance to given point
+                this.movingSpeed
+            );
+
         },
 
         render: function(){

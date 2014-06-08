@@ -36,7 +36,7 @@
           this.explanationTxt.text = 'You beat your record!!';
           this.explanationTxt.tint = 0xff33cc;
       } else {
-          this.explanationTxt.text = 'You neet to try harder, colected: ' + this.score;
+          this.explanationTxt.text = 'You neet to try harder\nColected: ' + this.score;
       }
 
       y = y + this.explanationTxt.height + 5;
