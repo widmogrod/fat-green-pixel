@@ -8,9 +8,9 @@
         this.scoreText = null;
         this.score = null;
         this.diamonds = null;
+        this.position = 0;
         this.polyline = null;
         this.stepDistance = 10;
-        this.prevDist = 0;
     }
 
     Game.prototype = {
@@ -22,8 +22,8 @@
             this.player = this.add.sprite(x, y, 'player');
             this.player.anchor.setTo(0.5, 0.5);
             this.player.debug = true;
-            this.player.scale.x = .4;
-            this.player.scale.y = .4;
+            this.player.scale.x = 0.4;
+            this.player.scale.y = 0.4;
             this.player.scaleGrowthSpeed = 1.05;
             this.player.scaleShrinkSpeed = 0.98;
             this.player.scaleAcceleration = 1;
@@ -71,13 +71,7 @@
 
             // Since, phaser.io dont have supprt for polylines
             // I have to do it manualy
-            var fallow = this.tilemap.collision.fallow[0];
-            this.polyline = fallow.polyline;
-            this.polyline.forEach(function(pos) {
-                pos[0] = fallow.x + pos[0];
-                pos[1] = fallow.y + pos[1];
-            });
-            this.position = 0;
+            this.loadPolyline();
 
             // Set player position at the begining of the path
             this.player.position.y = this.polyline[this.position][1];
@@ -93,6 +87,17 @@
             this.scoreText.x = this.game.width / 2 - this.scoreText.textWidth / 2;
         },
 
+        loadPolyline: function() {
+            // Since, phaser.io dont have supprt for polylines
+            // I have to do it manualy
+            var fallow = this.tilemap.collision.fallow[0];
+            this.polyline = fallow.polyline;
+            this.polyline.forEach(function(pos) {
+                pos[0] = fallow.x + pos[0];
+                pos[1] = fallow.y + pos[1];
+            });
+        },
+
 
         onCoinCollision: function(player, tile) {
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer');
@@ -105,6 +110,7 @@
         },
 
         onReachTheEnd: function(player, tile) {
+            /*jshint unused:false */
             this.game.state.start('you-win', undefined, undefined, this.score);
         },
 
@@ -123,6 +129,7 @@
         update: function () {
             var that = this;
             this.game.physics.arcade.collide(this.player, this.layer, function(player, tile){
+                /*jshint unused:false */
                 //TODO: buggy probably because of scale on player
                 //what about player body?
                 that.game.state.start('menu');
@@ -155,9 +162,7 @@
             this.player.scaleGrowthSpeed *= this.player.scaleAcceleration;
             this.player.scaleShrinkSpeed *= this.player.scaleAcceleration;
 
-            if (this.position < this.polyline.length - 1
-                && this.polyline[this.position][1] > this.player.body.y
-            ) {
+            if (this.position < this.polyline.length - 1 && this.polyline[this.position][1] > this.player.body.y) {
                 ++this.position;
 
                 this.stepDistance = this.player.body.y - this.polyline[this.position][1];
