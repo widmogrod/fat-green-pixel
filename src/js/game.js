@@ -9,7 +9,8 @@
         this.score = null;
         this.diamonds = null;
         this.polyline = null;
-         this.movingSpeed = 10;
+        this.stepDistance = 10;
+        this.prevDist = 0;
     }
 
     Game.prototype = {
@@ -154,17 +155,12 @@
             if (this.position < this.polyline.length - 1
                 && this.polyline[this.position][1] > this.player.body.y
             ) {
-                // this.player.body.x = this.polyline[this.position][0];
                 ++this.position;
 
-                // Callculate distance to destination
-                this.movingSpeed = this.polyline[this.position - 1][1] - this.polyline[this.position][1];
-                this.movingSpeed -= this.player.body.halfHeight;
-                // Divide it by speed, thanks to that we have speed witch wich we should move player to destination
-                this.movingSpeed /= this.player.body.speed;
-                // But we need to remember that current speed is per second
-                // We need to calculate it per frame
-                this.movingSpeed *= this.game.time.elapsed;
+                this.stepDistance = this.player.body.y - this.polyline[this.position][1];
+                this.stepDistance *= this.game.time.physicsElapsed;
+                // this.stepDistance = this.stepDistance >> 0;
+                console.log('move: ', this.stepDistance);
             }
 
             // Make moving from one point to another
@@ -174,9 +170,8 @@
                 this.polyline[this.position][0] - this.player.body.halfWidth,
                 // Current possition
                 this.player.body.x,
-                // Speed witch wich we want he moves do destination.
-                // Should be connected with distance to given point
-                this.movingSpeed
+                // Distance witch wich we want he moves do destination per frame
+                this.stepDistance
             );
 
         },
