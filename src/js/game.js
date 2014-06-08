@@ -69,7 +69,8 @@
             //  This resizes the game world to match the layer dimensions
             this.layer.resizeWorld();
 
-            var wordHeight = this.game.world.bounds.height;
+            // Since, phaser.io dont have supprt for polylines
+            // I have to do it manualy
             var fallow = this.tilemap.collision.fallow[0];
             this.polyline = fallow.polyline;
             this.polyline.forEach(function(pos) {
@@ -112,7 +113,9 @@
         },
         aproach: function(goal, current, step) {
             var delta = goal - current;
-            if (Math.abs(delta) < step) return goal;
+            if (Math.abs(delta) < step) {
+                return goal;
+            }
 
             return delta < 0 ? current - step : current + step;
         },
