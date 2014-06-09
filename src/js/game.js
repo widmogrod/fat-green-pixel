@@ -41,7 +41,8 @@
 
             //  The 'mario' key here is the Loader key given in game.load.tilemap
             this.tilemap = this.add.tilemap('sides-map');
-            this.tilemap.setCollision([9, 20]);
+            //this.tilemap.setCollision([9, 20]);
+            this.tilemap.setCollisionByExclusion([0]);
             this.tilemap.setTileIndexCallback(121, this.onCoinCollision.bind(this));
             this.tilemap.setTileIndexCallback(23, this.onReachTheEnd.bind(this));
 
@@ -66,7 +67,10 @@
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             this.layer = this.tilemap.createLayer('box-sides-layer');
-            //this.layer.debug = true;
+
+            //DEBUG ALL THE THINGS
+           this.layer.debug = true;
+
             //this.layer.fixedToCamera = true;
             //  This resizes the game world to match the layer dimensions
             this.layer.resizeWorld();
@@ -130,11 +134,18 @@
 
         update: function () {
             var that = this;
+            this.game.physics.arcade.collide(this.layer, this.player, function(player, tile){
+                /*jshint unused:false */
+                //TODO: buggy probably because of scale on player
+                //what about player body?
+                console.log('collision');
+                 that.game.state.start('menu');
+            });
             this.game.physics.arcade.collide(this.player, this.layer, function(player, tile){
                 /*jshint unused:false */
                 //TODO: buggy probably because of scale on player
                 //what about player body?
-                that.game.state.start('menu');
+               console.log('collision');
             });
             this.game.physics.arcade.overlap(this.player, this.diamonds, function(player, diamond){
                 diamond.kill();
@@ -184,10 +195,17 @@
                 this.stepDistance
             );
 
+            //update body
+            //this.player.body.setSize(this.player.width, this.player.height);
+
         },
 
         render: function(){
-            //this.game.debug.body(this.player);
+           //bug in phaser?
+           if(this.layer.debug === true){
+                this.game.debug.body(this.player, false);
+                //this.game.debug.bodyInfo(this.player, 'rgb(55,55,55)');
+            }
         }
 
     };
