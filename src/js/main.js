@@ -16,8 +16,9 @@ window.onload = function () {
   game = new Phaser.Game(width, height, Phaser.AUTO, 'fat-green-pixel-game');
   game.state.add('boot', ns.Boot);
   game.state.add('preloader', ns.Preloader);
+  game.state.add('levels', ns.Levels);
   game.state.add('menu', ns.Menu);
-  game.state.add('game', ns.Game);
+  game.state.add('level1', ns.Game);
   game.state.add('gameover', ns.GameOver);
   game.state.add('you-win', ns.YouWin);
 

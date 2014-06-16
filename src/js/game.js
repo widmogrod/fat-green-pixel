@@ -134,19 +134,16 @@
 
         update: function () {
             var that = this;
-            this.game.physics.arcade.collide(this.layer, this.player, function(player, tile){
+            var collision = this.game.physics.arcade.collide(this.layer, this.player, function(player, tile){
                 /*jshint unused:false */
                 //TODO: buggy probably because of scale on player
                 //what about player body?
                 console.log('collision');
                  that.game.state.start('menu');
             });
-            this.game.physics.arcade.collide(this.player, this.layer, function(player, tile){
-                /*jshint unused:false */
-                //TODO: buggy probably because of scale on player
-                //what about player body?
-               console.log('collision');
-            });
+
+            console.log('collision return ', collision);
+
             this.game.physics.arcade.overlap(this.player, this.diamonds, function(player, diamond){
                 diamond.kill();
                 that.newPoint();
@@ -162,7 +159,7 @@
 
             //TODO: check time diff!!!!!
 
-            if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
+            if (true || this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
                 this.player.scale.x *= this.player.scaleGrowthSpeed;
                 this.player.scale.y *= this.player.scaleGrowthSpeed;
             } else {
