@@ -159,7 +159,7 @@
 
             //TODO: check time diff!!!!!
 
-            if (true || this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
+            if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
                 this.player.scale.x *= this.player.scaleGrowthSpeed;
                 this.player.scale.y *= this.player.scaleGrowthSpeed;
             } else {
