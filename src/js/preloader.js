@@ -31,6 +31,7 @@
             //  This could be Phaser.Tilemap.CSV too.
 
             this.load.tilemap('sides-map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('level-debug', 'assets/level-debug.json', null, Phaser.Tilemap.TILED_JSON);
 
             //  Next we load the tileset. This is just an image, loaded in via the normal way we load images:
 
@@ -47,7 +48,8 @@
 
         update: function () {
             if (!!this.ready) {
-                this.game.state.start('menu');
+                this.game.state.start('level2');
+                //this.game.state.start('menu');
             }
         },
 
