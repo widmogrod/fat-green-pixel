@@ -23,6 +23,7 @@
 
             this.player = this.add.sprite(x, y, 'player');
             this.player.anchor.setTo(0.5, 0.5);
+            this.player.velocityX = -1;
             this.player.debug = true;
             this.player.scale.x = 0.4;
             this.player.scale.y = 0.4;
@@ -38,6 +39,7 @@
             // Enable physics on player
             this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
             this.player.body.collideWorldBounds = true;
+            this.player.body.velocity.x = 1;
 
             //  The 'mario' key here is the Loader key given in game.load.tilemap
             this.tilemap = this.add.tilemap('sides-map');
@@ -69,7 +71,7 @@
             this.layer = this.tilemap.createLayer('box-sides-layer');
 
             //DEBUG ALL THE THINGS
-           this.layer.debug = true;
+           //this.layer.debug = true;
 
             //this.layer.fixedToCamera = true;
             //  This resizes the game world to match the layer dimensions
@@ -135,9 +137,6 @@
         update: function () {
             var that = this;
             var collision = this.game.physics.arcade.collide(this.layer, this.player, function(player, tile){
-                /*jshint unused:false */
-                //TODO: buggy probably because of scale on player
-                //what about player body?
                 console.log('collision');
                  that.game.state.start('menu');
             });
@@ -150,14 +149,6 @@
             }, null, this);
 
             this.player.body.velocity.y = this.player.movingSpeed;
-            // this.player.movingSpeed *= this.player.movingAcceleration;
-
-            // this.game.camera.y -= 2;
-
-            //TODO: scale & velocity vs collistions....
-            ///this.player.y = this.game.camera.y + 50;
-
-            //TODO: check time diff!!!!!
 
             if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
                 this.player.scale.x *= this.player.scaleGrowthSpeed;
@@ -191,9 +182,7 @@
                 // Distance witch wich we want he moves do destination per frame
                 this.stepDistance
             );
-
-            //update body
-            //this.player.body.setSize(this.player.width, this.player.height);
+            this.player.body.velocity.x *= this.player.velocityX;
 
         },
 
