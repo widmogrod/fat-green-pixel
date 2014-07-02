@@ -21,6 +21,7 @@
       var levels = 10;
       var levelsInRow = 3;
       var offsetY = this.titleTxt.y + this.titleTxt.textHeight;
+      var rowOffset = 50;
 
       for (var i = 1; i < levels; i++) {
 
@@ -31,7 +32,7 @@
         position = position + (position * ((i-1) % levelsInRow ))
         level.x =  position - this.game.width / levelsInRow / 2;
          if((i-1) % levelsInRow  === 0){
-          offsetY += level.textHeight;
+          offsetY += level.textHeight + rowOffset;
          }
         level.y = offsetY;
         level.inputEnabled = true;

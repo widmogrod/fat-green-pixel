@@ -35,7 +35,7 @@
     },
 
     onDown: function () {
-      this.game.state.start('level1');
+      this.game.state.start('levels');
     }
   };
 

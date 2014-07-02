@@ -18,8 +18,9 @@ window.onload = function () {
   game.state.add('preloader', ns.Preloader);
   game.state.add('levels', ns.Levels);
   game.state.add('menu', ns.Menu);
-  game.state.add('level1', ns.Game);
-  game.state.add('level2', ns.GameDebug);
+  game.state.add('level1', ns.Level1);
+  game.state.add('level2', ns.Game);
+  game.state.add('level9', ns.GameDebug);
   game.state.add('gameover', ns.GameOver);
   game.state.add('you-win', ns.YouWin);
 
