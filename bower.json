@@ -5,6 +5,6 @@
     ""
   ],
   "dependencies": {
-    "phaser-official": "latest"
+    "phaser": "git://github.com/nDmitry/bower-phaser.git"
   }
 }

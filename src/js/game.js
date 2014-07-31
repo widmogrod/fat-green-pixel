@@ -61,11 +61,6 @@
             //  And now we convert all of the Tiled objects with an ID of 135 into sprites within the coins group
             this.tilemap.createFromObjects('Picks Layer', 135, 'diamond', 0, true, false, this.diamonds);
 
-            //  Add animations to all of the coin sprites
-            this.diamonds.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3], 4, true);
-            this.diamonds.callAll('animations.play', 'animations', 'spin');
-
-
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             this.layer = this.tilemap.createLayer('box-sides-layer');
