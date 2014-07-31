@@ -24,7 +24,7 @@
       var rowOffset = 50;
 
       for (var i = 1; i < levels; i++) {
-
+        var button = this.game.add.button(x, y, 'diamond', this.onDown(i), this);
         var level = this.add.bitmapText(x, y, 'minecraftia', ''+i );
         level.align = 'center';
         this.game.width / 2 - level.textWidth / 2;
@@ -35,9 +35,11 @@
           offsetY += level.textHeight + rowOffset;
          }
         level.y = offsetY;
-        level.inputEnabled = true;
-        level.input.useHandCursor = true;
-        level.events.onInputDown.add(this.onDown, this);
+        button.scale.y = 2;
+        button.scale.x = 2;
+
+        button.x = level.x + (level.textWidth/2) - (button.width/2);
+        button.y = level.y + (level.textHeight/2) - (button.height/2);
      }
 
       //this.input.onDown.add(this.onDown, this);
@@ -48,10 +50,12 @@
 
     },
 
-    onDown: function (levelText) {
+    onDown: function (number) {
+      return function(){
+        console.log(number);
+        this.game.state.start('level'+number);
+      }
 
-      console.log(levelText);
-      this.game.state.start('level'+levelText.text);
     },
     render: function(){
        //this.game.debug.inputInfo(32, 32);
