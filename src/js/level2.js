@@ -27,6 +27,7 @@
             this.player.debug = true;
             this.player.scale.x = 0.4;
             this.player.scale.y = 0.4;
+            this.approachX = x;
             this.player.scaleGrowthSpeed = 1.05;
             this.player.scaleShrinkSpeed = 0.98;
             this.player.scaleAcceleration = 1;
@@ -61,6 +62,11 @@
             //  And now we convert all of the Tiled objects with an ID of 135 into sprites within the coins group
             this.tilemap.createFromObjects('Picks Layer', 135, 'diamond', 0, true, false, this.diamonds);
 
+            //  Add animations to all of the coin sprites
+            this.diamonds.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3], 4, true);
+            this.diamonds.callAll('animations.play', 'animations', 'spin');
+
+
             //  Creates a layer from the World1 layer in the map data.
             //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             this.layer = this.tilemap.createLayer('box-sides-layer');
@@ -72,15 +78,9 @@
             //  This resizes the game world to match the layer dimensions
             this.layer.resizeWorld();
 
-            // Since, phaser.io dont have supprt for polylines
-            // I have to do it manualy
-            this.loadPolyline();
 
-            // Set player position at the begining of the path
-            this.player.position.y = this.polyline[this.position][1];
-            this.game.camera.y = this.polyline[this.position][1];
-            // this.player.position.y = this.tilemap.heightInPixels - 100;
-            // this.game.camera.y =  this.tilemap.heightInPixels - 100;
+            this.player.position.y = this.tilemap.heightInPixels - 100;
+            this.game.camera.y =  this.tilemap.heightInPixels - 100;
 
             this.score = 0;
 
@@ -89,18 +89,6 @@
             this.scoreText.fixedToCamera = true;
             this.scoreText.x = this.game.width / 2 - this.scoreText.textWidth / 2;
         },
-
-        loadPolyline: function() {
-            // Since, phaser.io dont have supprt for polylines
-            // I have to do it manualy
-            var fallow = this.tilemap.collision.fallow[0];
-            this.polyline = fallow.polyline;
-            this.polyline.forEach(function(pos) {
-                pos[0] = fallow.x + pos[0];
-                pos[1] = fallow.y + pos[1];
-            });
-        },
-
 
         onCoinCollision: function(player, tile) {
             this.tilemap.removeTile(tile.x, tile.y, 'box-sides-layer');
@@ -148,6 +136,10 @@
             if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
                 this.player.scale.x *= this.player.scaleGrowthSpeed;
                 this.player.scale.y *= this.player.scaleGrowthSpeed;
+
+                //store position
+                this.approachX = this.game.input.position.x;
+
             } else {
                 this.player.scale.x *= this.player.scaleShrinkSpeed;
                 this.player.scale.y *= this.player.scaleShrinkSpeed;
@@ -158,20 +150,11 @@
             this.player.scaleGrowthSpeed *= this.player.scaleAcceleration;
             this.player.scaleShrinkSpeed *= this.player.scaleAcceleration;
 
-            if (this.position < this.polyline.length - 1 && this.polyline[this.position][1] > this.player.body.y) {
-                ++this.position;
-
-                this.stepDistance = this.player.body.y - this.polyline[this.position][1];
-                this.stepDistance *= this.game.time.physicsElapsed;
-                // this.stepDistance = this.stepDistance >> 0;
-                // console.log('move: ', this.stepDistance);
-            }
-
             // Make moving from one point to another
             this.player.body.x = this.aproach(
                 // Destination, when we want player to be.
                 // Takes into account player body, and move it relatively to its center
-                this.polyline[this.position][0] - this.player.body.halfWidth,
+                this.approachX - this.player.body.halfWidth,
                 // Current possition
                 this.player.body.x,
                 // Distance witch wich we want he moves do destination per frame
