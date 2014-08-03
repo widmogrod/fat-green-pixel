@@ -127,6 +127,15 @@
             console.log('collision return ', collision);
 
             this.game.physics.arcade.overlap(this.player, this.diamonds, function(player, diamond){
+
+                var side = this.player.width;
+                var newArea = side * side + diamond.width * diamond.height;
+
+                var newSide = Math.sqrt(newArea);
+                var newScale = (this.player.scale.x * newSide) / side;
+
+                this.player.scale.x = this.player.scale.y = newScale;
+
                 diamond.kill();
                 that.newPoint();
             }, null, this);
@@ -134,8 +143,8 @@
             this.player.body.velocity.y = this.player.movingSpeed;
 
             if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown ){
-                this.player.scale.x *= this.player.scaleGrowthSpeed;
-                this.player.scale.y *= this.player.scaleGrowthSpeed;
+                // this.player.scale.x *= this.player.scaleGrowthSpeed;
+                // this.player.scale.y *= this.player.scaleGrowthSpeed;
 
                 //store position
                 this.approachX = this.game.input.position.x;
