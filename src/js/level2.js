@@ -1,7 +1,7 @@
 (function(undefined) {
     'use strict';
 
-    function Game() {
+    function Level2() {
         this.player = null;
         this.tilemap = null;
         this.layer = null;
@@ -11,7 +11,7 @@
         this.polyline = null;
     }
 
-    Game.prototype = {
+    Level2.prototype = {
 
         init: function() {
             this.position = 0;
@@ -192,6 +192,6 @@
     };
 
     window['fat-green-pixel'] = window['fat-green-pixel'] || {};
-    window['fat-green-pixel'].Game = Game;
+    window['fat-green-pixel'].Level2 = Level2;
 
 }());
