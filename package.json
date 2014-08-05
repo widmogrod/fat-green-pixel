@@ -2,7 +2,10 @@
   "name": "fat-green-pixel",
   "description": "",
   "readme": "",
-  "repository": "",
+  "repository" : {
+    "type" : "git",
+    "url" : "git@github.com:widmogrod/fat-green-pixel.git"
+  },
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -12,7 +15,7 @@
     "gulp-concat": "*",
     "gulp-connect": "*",
     "gulp-download": "*",
-    "gulp-ftp": "^0.2.1",
+    "gulp-ftp": "*",
     "gulp-jshint": "*",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
