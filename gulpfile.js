@@ -11,6 +11,9 @@ var gulp = require('gulp')
     , connect = require('gulp-connect')
     , paths;
 var ftp = require('gulp-ftp');
+var flo = require('fb-flo');
+var path = require('path');
+var  fs = require('fs');
 
 
 
@@ -104,11 +107,43 @@ gulp.task('html', function(){
     .on('error', gutil.log);
 });
 
+gulp.task('flo', function(done) {
+  server = flo('src', {
+    port: 8888,
+    host: 'localhost',
+    verbose: 1,
+    glob: [
+       // All JS files in `sourceDirToWatch` and subdirectories
+      '**/*.js',
+       // All CSS files in `sourceDirToWatch` and subdirectories
+      '**/*.css'
+    ]
+  }, resolver)
+  .once('ready', done);
+});
+
+function resolver(filepath, callback) {
+
+    callback({
+      resourceURL: filepath,
+      // any string-ish value is acceptable. i.e. strings, Buffers etc.
+      contents: fs.readFileSync('src/' + filepath)
+    });
+}
+
 gulp.task('connect', function () {
     connect.server({
         root: [__dirname + '/src'],
         port: 9000,
         livereload: true
+    });
+});
+
+gulp.task('flo-connect', function () {
+    connect.server({
+        root: [__dirname + '/src'],
+        port: 9000,
+        livereload: false
     });
 });
 
@@ -118,6 +153,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['connect', 'watch']);
+gulp.task('flow', ['flo-connect', 'flo']);
 gulp.task('build', ['clean', 'copy', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
 
 gulp.task('dd', ['clean'], function(){

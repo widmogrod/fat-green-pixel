@@ -47,7 +47,7 @@
     },
 
     update: function () {
-
+      this.titleTxt.x += 0.3;
     },
 
     onDown: function (number) {

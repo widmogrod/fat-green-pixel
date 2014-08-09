@@ -24,13 +24,15 @@
     "gulp-uglify": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
-    "tiny-lr": "*"
+    "tiny-lr": "*",
+    "fb-flo": "*"
   },
   "scripts": {
     "post-install": "node ./node_modules/bower/bin/bower install",
     "start": "node ./node_modules/gulp/bin/gulp.js",
     "build": "node ./node_modules/gulp/bin/gulp.js build",
     "lint": "node ./node_modules/gulp/bin/gulp.js lint",
-    "deploy": "node ./node_modules/gulp/bin/gulp.js deploy"
+    "deploy": "node ./node_modules/gulp/bin/gulp.js deploy",
+    "flo": "node ./node_modules/gulp/bin/gulp.js flow"
   }
 }
