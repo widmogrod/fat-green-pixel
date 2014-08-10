@@ -47,7 +47,10 @@
     },
 
     update: function () {
-      this.titleTxt.x += 0.3;
+      this.titleTxt.x -= 1;
+      if((this.titleTxt.x + this.titleTxt.textWidth) < 0){
+        this.titleTxt.x = this.game.width;
+      }
     },
 
     onDown: function (number) {

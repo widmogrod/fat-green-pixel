@@ -10,6 +10,8 @@
 
         create: function () {
             this.game.input.addPointer();
+            //consider removing it for production
+            this.game.stage.disableVisibilityChange = true;
 
             if (this.game.device.desktop) {
                 this.game.scale.pageAlignHorizontally = true;
