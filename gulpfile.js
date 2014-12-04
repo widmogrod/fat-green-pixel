@@ -31,9 +31,9 @@ paths = {
 gulp.task('deploy', function () {
     return gulp.src(paths.dist + '**/*')
     .pipe(ftp({
-        host: 'ftp.twogreenpixels.io',
-        user: 'twogreen',
-        pass: 'CvX44PBf',
+        host: '',
+        user: '',
+        pass: '',
         remotePath: paths.serverDir
     }));
 });
